@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	xmlns:tools="http://schemas.android.com/tools">
+
+	<data>
+		<!-- Binding data variables -->
+	</data>
+
+	<androidx.constraintlayout.widget.ConstraintLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:background="@color/background"
+		tools:context=".view.fragment.Instructions"
+		android:padding="16dp"
+		>
+
+		<!-- Back button -->
+<!--		<ImageButton-->
+<!--			android:id="@+id/btnBack"-->
+<!--			android:layout_width="48dp"-->
+<!--			android:layout_height="48dp"-->
+<!--			android:padding="12dp"-->
+<!--			android:background="?attr/selectableItemBackgroundBorderless"-->
+<!--			android:src="@drawable/ic_back"-->
+<!--			android:contentDescription="@string/back_button"-->
+<!--			app:layout_constraintStart_toStartOf="parent"-->
+<!--			app:layout_constraintTop_toTopOf="parent"-->
+<!--			app:layout_constraintBottom_toBottomOf="@id/tvTitle"-->
+<!--			app:tint="@color/orange" />-->
+
+		<!-- Title -->
+<!--		<TextView-->
+<!--			android:id="@+id/tvTitle"-->
+<!--			android:layout_width="wrap_content"-->
+<!--			android:layout_height="wrap_content"-->
+<!--			android:text="@string/title_instructions"-->
+<!--			android:textColor="@color/orange"-->
+<!--			android:textSize="25sp"-->
+<!--			android:textStyle="bold"-->
+<!--			app:layout_constraintStart_toEndOf="@id/btnBack"-->
+<!--			app:layout_constraintTop_toTopOf="parent"-->
+<!--			app:layout_constraintBottom_toBottomOf="@id/btnBack"-->
+<!--			app:layout_constraintEnd_toEndOf="parent" />-->
+
+		<include
+			android:id="@+id/contentToolbar"
+			layout="@layout/toolbar_instructions"
+			app:layout_constraintTop_toTopOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintEnd_toEndOf="parent" />
+
+		<!-- How to play section -->
+		<TextView
+			android:id="@+id/tvHowToPlayTitle"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/how_to_play_title"
+			android:textColor="@color/white"
+			android:textSize="18sp"
+			android:textStyle="bold"
+			android:layout_marginTop="80dp"
+			app:layout_constraintTop_toBottomOf="@id/contentToolbar"
+			app:layout_constraintStart_toStartOf="parent"
+			/>
+
+		<TextView
+			android:id="@+id/tvHowToPlayContent"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/how_to_play_content"
+			android:textColor="@color/white"
+			android:textSize="16sp"
+			android:layout_marginTop="8dp"
+			app:layout_constraintTop_toBottomOf="@id/tvHowToPlayTitle"
+			app:layout_constraintStart_toStartOf="parent"
+			/>
+
+		<!-- Who win section -->
+		<TextView
+			android:id="@+id/tvWhoWinTitle"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/who_win_title"
+			android:textColor="@color/white"
+			android:textSize="18sp"
+			android:textStyle="bold"
+			android:layout_marginTop="40dp"
+			app:layout_constraintTop_toBottomOf="@id/tvHowToPlayContent"
+			app:layout_constraintStart_toStartOf="parent"
+			/>
+
+		<TextView
+			android:id="@+id/tvWhoWinContent"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="@string/who_win_content"
+			android:textColor="@color/white"
+			android:textSize="16sp"
+			android:layout_marginTop="8dp"
+			app:layout_constraintTop_toBottomOf="@id/tvWhoWinTitle"
+			app:layout_constraintStart_toStartOf="parent"
+			/>
+
+		<!-- Animated Image -->
+		<!--<ImageView
+			android:id="@+id/ivAnimatedWin"
+			android:layout_width="208dp"
+			android:layout_height="363dp"
+			android:layout_marginTop="10dp"
+			android:contentDescription="@string/animation_image_winner"
+			android:src="@drawable/win"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/tvWhoWinContent" />-->
+		<ImageView
+			android:id="@+id/ivAnimatedWin"
+			android:layout_width="208dp"
+			android:layout_height="363dp"
+			android:layout_marginTop="10dp"
+			android:contentDescription="@string/animation_image_winner"
+			android:src="@drawable/win_animated_transparent"
+			android:background="@color/transparent"
+			app:layout_constraintEnd_toEndOf="parent"
+			app:layout_constraintStart_toStartOf="parent"
+			app:layout_constraintTop_toBottomOf="@id/tvWhoWinContent" />
+
+
+	</androidx.constraintlayout.widget.ConstraintLayout>
+</layout>
