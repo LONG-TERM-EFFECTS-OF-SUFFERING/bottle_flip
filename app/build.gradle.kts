@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.jetbrains.kotlin.android)
     id("kotlin-kapt")
     alias(libs.plugins.devtools)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -114,4 +115,5 @@ dependencies {
     ksp("androidx.room:room-compiler:2.5.2")
     implementation ("com.getbase:floatingactionbutton:1.10.1")
     implementation(kotlin("script-runtime"))
+    implementation(platform("com.google.firebase:firebase-bom:33.6.0"))
 }
