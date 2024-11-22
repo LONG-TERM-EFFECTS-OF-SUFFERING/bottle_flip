@@ -27,10 +27,9 @@ class EditChallengeDialog : DialogFragment() {
 
         val dialog = AlertDialog.Builder(requireContext())
 
-        // Inflar el layout existente y obtener el binding
         binding = EditChallengeDialogBinding.inflate(LayoutInflater.from(context))
         dataChallenge()
-        // Referenciar los elementos del layout usando el binding
+
         val editTextChallenge = binding.etDescripcionReto
         val buttonCancel = binding.btnCancelar
         val buttonSave = binding.btnGuardar
@@ -45,7 +44,6 @@ class EditChallengeDialog : DialogFragment() {
             Log.d("upDateDebug", "inicio")
             updateChallenge()
             findNavController().navigate(R.id.action_edit_to_challenges)
-            //dismiss()  // Cierra el diálogo
         }
 
         // Configurar el diálogo
