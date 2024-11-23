@@ -55,8 +55,6 @@ android {
 }
 
 dependencies {
-    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.1")
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
@@ -89,29 +87,17 @@ dependencies {
 
     implementation(libs.androidx.coordinatorlayout)
 
-    //AnimacionLottie
-    implementation("com.airbnb.android:lottie:5.2.0")
+    implementation(libs.lottie)
 
-    //cardView
-    implementation("androidx.cardview:cardview:1.0.0")
-    //RecyclerView
-    implementation("androidx.recyclerview:recyclerview:1.3.1")
 
-    //corrutinas
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.6.4")
-
-    //viewmodel
-    implementation ("androidx.lifecycle:lifecycle-viewmodel-ktx:2.6.2")
-    implementation ("androidx.activity:activity-ktx:1.8.0")
-    implementation ("androidx.fragment:fragment-ktx:1.6.2")
-
-    // LiveData
-    implementation ("androidx.lifecycle:lifecycle-livedata-ktx:2.3.1")
-
-    // Room
-    implementation ("androidx.room:room-runtime:2.5.2")
-    implementation ("androidx.room:room-ktx:2.5.2")
-    ksp("androidx.room:room-compiler:2.5.2")
-    implementation ("com.getbase:floatingactionbutton:1.10.1")
+    implementation (libs.floatingactionbutton)
     implementation(kotlin("script-runtime"))
+
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
+
+    implementation(platform(libs.firebase.bom))
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.auth.ktx)
+
 }
