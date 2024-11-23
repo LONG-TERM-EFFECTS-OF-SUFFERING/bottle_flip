@@ -10,6 +10,7 @@ import android.os.Looper
 import android.view.View
 import android.view.WindowInsets
 import android.view.WindowInsetsController
+import com.example.bottle_flip.view.LoginActivity
 
 class SplashActivity : AppCompatActivity() {
 
@@ -37,7 +38,7 @@ class SplashActivity : AppCompatActivity() {
         }
         // Espera de 5 segundos antes de continuar al Home
         Handler(Looper.getMainLooper()).postDelayed({
-            startActivity(Intent(this, MainActivity::class.java))
+            startActivity(Intent(this, LoginActivity::class.java))
             finish() // Finaliza la actividad de splash
         }, 5000) // 5000 milisegundos = 5 segundos
     }
