@@ -29,6 +29,10 @@ class LoginViewModel @Inject constructor(
 		repository.loginUser(userRequest, isLoggedIn)
 	}
 
+	fun logoutUser() {
+		repository.logoutUser()
+	}
+
 	fun session(email: String?, callback: (Boolean) -> Unit) {
 		if (email != null)
 			callback(true)

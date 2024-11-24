@@ -3,11 +3,14 @@ package com.example.bottle_flip.view
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
+import android.graphics.Typeface
 import android.os.Bundle
-import android.view.View
+import android.text.Editable
+import android.text.TextWatcher
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.example.bottle_flip.MainActivity
 import com.example.bottle_flip.R
@@ -58,6 +61,8 @@ class LoginActivity: AppCompatActivity() {
 		binding.btnLogin.setOnClickListener {
 			loginUser()
 		}
+
+		checkButtons()
 	}
 
 	private fun registerUser() {
@@ -75,6 +80,7 @@ class LoginActivity: AppCompatActivity() {
 		val intent = Intent (this, MainActivity::class.java)
 		startActivity(intent)
 		finish()
+		Toast.makeText(this, "Successful login", Toast.LENGTH_SHORT).show()
 	}
 
 	private fun loginUser(){
@@ -91,11 +97,54 @@ class LoginActivity: AppCompatActivity() {
 		}
 	}
 
+	private fun areFieldsValid() : Boolean {
+		val email = binding.etEmail.text.toString()
+		val password = binding.etPassword.text.toString()
+
+
+		if (password.length < 6) {
+			binding.tilPassword.error = "Mínimo 6 dígitos"
+			binding.tilPassword.boxStrokeColor = ContextCompat.getColor(this@LoginActivity, R.color.red)
+			return false
+		} else {
+			binding.tilPassword.error = null
+			return email.isNotEmpty()
+		}
+	}
+
+	private fun checkButtons() {
+		val textWatcher = object : TextWatcher {
+			override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+
+			override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+				val areFieldsValid = areFieldsValid()
+				binding.btnLogin.isEnabled = areFieldsValid
+				binding.tvRegister.isEnabled = areFieldsValid
+
+				if (areFieldsValid) {
+					binding.tvRegister.setTypeface(null, Typeface.BOLD)
+					binding.btnLogin.setTypeface(null, Typeface.BOLD)
+
+				} else {
+					binding.tvRegister.setTypeface(null, Typeface.NORMAL)
+					binding.btnLogin.setTypeface(null, Typeface.NORMAL)
+				}
+			}
+
+			override fun afterTextChanged(s: Editable?) {}
+		}
+
+		binding.etEmail.addTextChangedListener(textWatcher)
+		binding.etPassword.addTextChangedListener(textWatcher)
+	}
+
 	private fun checkSession() {
 		val email = sharedPreferences.getString("email", null)
 		loginViewModel.session(email) { isViewEnable ->
 			if (isViewEnable) {
-				binding.clContainer.visibility = View.INVISIBLE
+//				binding.clContainer.visibility = View.INVISIBLE
+				sharedPreferences.edit().clear().apply()
+				loginViewModel.logoutUser()
 				goHome()
 			}
 		}
