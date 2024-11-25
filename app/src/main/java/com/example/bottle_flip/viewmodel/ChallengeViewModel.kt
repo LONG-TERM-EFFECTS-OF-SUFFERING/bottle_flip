@@ -84,5 +84,19 @@ class ChallengeViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
+
+    fun getRandomChallengeFromFirestore() {
+        viewModelScope.launch {
+            _progresState.value = true
+            try {
+                val challenge = challengeRepository.getRandomChallengeFromFirestore()
+                _listChallenge.value = challenge?.let { mutableListOf(it) } ?: mutableListOf()
+            } catch (e: Exception) {
+                Log.e("ViewModelError", "Error fetching random challenge: ${e.message}")
+            } finally {
+                _progresState.value = false
+            }
+        }
+    }
 }
 
