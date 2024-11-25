@@ -14,6 +14,7 @@ import com.airbnb.lottie.LottieAnimationView
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.RotateAnimation
@@ -278,11 +279,15 @@ class Game : Fragment() {
     }
 
     private fun loadChallenge() {
+        Log.d("GameFragment", "Observador de listChallenge registrado")
+        // Remover cualquier observador anterior antes de agregar uno nuevo
+        challengeViewModel.listChallenge.removeObservers(viewLifecycleOwner)
+
         lifecycleScope.launch {
-            // Call the ViewModel to get a challenge from Firestore
+            // Llama al ViewModel para obtener un reto
             challengeViewModel.getRandomChallengeFromFirestore()
 
-            // View the challenges obtained
+            // Observa los retos obtenidos
             challengeViewModel.listChallenge.observe(viewLifecycleOwner) { challenges ->
                 if (challenges.isNotEmpty()) {
                     val challenge = challenges.first()
@@ -293,6 +298,7 @@ class Game : Fragment() {
             }
         }
     }
+
 
 
     private suspend fun getRandomChallengeFromDatabase(): Challenge? {
