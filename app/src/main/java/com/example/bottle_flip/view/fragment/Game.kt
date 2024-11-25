@@ -14,6 +14,7 @@ import com.airbnb.lottie.LottieAnimationView
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
+import android.util.Log
 import android.view.animation.Animation
 import android.view.animation.DecelerateInterpolator
 import android.view.animation.RotateAnimation
@@ -31,8 +32,12 @@ import com.example.bottle_flip.model.Challenge
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import androidx.fragment.app.viewModels
+import com.example.bottle_flip.viewmodel.ChallengeViewModel
 
 class Game : Fragment() {
+
+    private val challengeViewModel: ChallengeViewModel by viewModels() // ViewModel to obtain challenges
 
     private lateinit var countdownText: TextView    //texto contador
     private lateinit var countdownTimer: CountDownTimer //Tiempo contador
@@ -274,15 +279,27 @@ class Game : Fragment() {
     }
 
     private fun loadChallenge() {
+        Log.d("GameFragment", "Observador de listChallenge registrado")
+        // Remover cualquier observador anterior antes de agregar uno nuevo
+        challengeViewModel.listChallenge.removeObservers(viewLifecycleOwner)
+
         lifecycleScope.launch {
-            val challenge = getRandomChallengeFromDatabase()
-            if (challenge != null) {
-                ChallengeDialog.showDialogChallenge(requireContext(), this@Game, challenge.description)
-            } else {
-                ChallengeDialog.showDialogChallenge(requireContext(), this@Game, "No hay retos disponibles")
+            // Llama al ViewModel para obtener un reto
+            challengeViewModel.getRandomChallengeFromFirestore()
+
+            // Observa los retos obtenidos
+            challengeViewModel.listChallenge.observe(viewLifecycleOwner) { challenges ->
+                if (challenges.isNotEmpty()) {
+                    val challenge = challenges.first()
+                    ChallengeDialog.showDialogChallenge(requireContext(), this@Game, challenge.description)
+                } else {
+                    ChallengeDialog.showDialogChallenge(requireContext(), this@Game, "No hay retos disponibles")
+                }
             }
         }
     }
+
+
 
     private suspend fun getRandomChallengeFromDatabase(): Challenge? {
         return withContext(Dispatchers.IO) {
