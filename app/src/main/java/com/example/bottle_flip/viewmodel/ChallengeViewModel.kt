@@ -59,9 +59,12 @@ class ChallengeViewModel(application: Application) : AndroidViewModel(applicatio
         viewModelScope.launch {
             _progresState.value = true
             try {
+                Log.d("viewModelDebug", challenge.toString())
                 challengeRepository.deletechallenge(challenge)
+                Log.d("viewModelDebug2", challenge.toString())
                 _progresState.value = false
             } catch (e: Exception) {
+                Log.d("viewModelDebug3", challenge.toString())
                 _progresState.value = false
             }
 
