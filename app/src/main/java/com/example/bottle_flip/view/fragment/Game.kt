@@ -13,6 +13,7 @@ import android.widget.ImageView
 import com.airbnb.lottie.LottieAnimationView
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
 import android.view.animation.Animation
@@ -33,7 +34,11 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import androidx.fragment.app.viewModels
+import com.example.bottle_flip.MainActivity
+import com.example.bottle_flip.view.LoginActivity
 import com.example.bottle_flip.viewmodel.ChallengeViewModel
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.firestore.FirebaseFirestore
 
 class Game : Fragment() {
 
@@ -51,8 +56,10 @@ class Game : Fragment() {
     private lateinit var audioBackground: MediaPlayer
     private lateinit var audioSpinBottle: MediaPlayer
     private lateinit var binding: GameBinding  //Acceder a los componenetes de la vista principal
-    private var isMute: Boolean = true
+    private lateinit var sharedPreferences: SharedPreferences
     private lateinit var challengeRepository: challengeRepository
+    private var isMute: Boolean = true
+    private val db = FirebaseFirestore.getInstance()
 
     private val _statusShowDialog = MutableLiveData(false)
     val statusShowDialog: LiveData<Boolean> get() = _statusShowDialog
@@ -78,6 +85,7 @@ class Game : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        sharedPreferences = requireActivity().getSharedPreferences("shared", Context.MODE_PRIVATE)
         menu(view) //Manejar el menu
         media()    //Manejar el sonido
         bottle()   //Manejar la botella
@@ -138,7 +146,15 @@ class Game : Fragment() {
             val shareIntent = Intent.createChooser(sendIntent, "Share app via")
             it.context.startActivity(shareIntent)
         }
-
+        //Cerrar sesion
+        binding.icMenu.btnExit.setOnClickListener {
+            sharedPreferences.edit().clear().apply()
+            FirebaseAuth.getInstance().signOut()
+            (requireActivity() as MainActivity).apply {
+                startActivity(Intent(this, LoginActivity::class.java))
+                finish()
+            }
+        }
         //Girar botella
         binding.btnSpin.setOnClickListener {
             spinBottle()
@@ -176,7 +192,7 @@ class Game : Fragment() {
                 //audioShowChallenge.start()
                 audioSpinBottle.pause()
                 showCountdown()
-                audioBackground.start()
+                //audioBackground.start()
                 //audioButton.pause()
             }
        }
@@ -225,7 +241,7 @@ class Game : Fragment() {
 
             override fun onAnimationEnd(p0: Animation?) {
                 _statusRotationBottle.value = false
-                _enableButton.value = true
+                //_enableButton.value = true
                // _enabledStreamers.value = false
                 _statusShowDialog.value = true
             }
@@ -234,7 +250,6 @@ class Game : Fragment() {
         })
         _rotationBotle.value = rotation
     }
-
 //    private fun showCountdown() {//Mostrar y ocultar contador
 //        binding.countdownText.visibility = View.VISIBLE // Hacer visible el contador
 //        binding.countdownText.text = "3" // Comenzar con 3
@@ -272,8 +287,11 @@ class Game : Fragment() {
 
             override fun onFinish() {
                 binding.countdownText.visibility = View.GONE
-                binding.btnSpin.isEnabled = true
+                //binding.btnSpin.isEnabled = true
                 loadChallenge()
+                _enableButton.value = true
+                binding.btnSpin.isEnabled = true
+                audioBackground.start()
             }
         }.start()
     }
