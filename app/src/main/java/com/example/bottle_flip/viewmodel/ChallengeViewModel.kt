@@ -11,6 +11,7 @@ import com.example.bottle_flip.data.ChallengeDB
 import com.example.bottle_flip.repository.challengeRepository
 import kotlinx.coroutines.launch
 import com.example.bottle_flip.data.ChallengeDao
+import com.example.bottle_flip.utils.SingleLiveEvent
 
 
 class ChallengeViewModel(application: Application) : AndroidViewModel(application) {
@@ -18,7 +19,7 @@ class ChallengeViewModel(application: Application) : AndroidViewModel(applicatio
     val context = getApplication<Application>()
     private val challengeRepository = challengeRepository(context)
 
-    private val _listChallenge = MutableLiveData<MutableList<Challenge>>()
+    private val _listChallenge = SingleLiveEvent<MutableList<Challenge>>()
     val listChallenge: LiveData<MutableList<Challenge>> get() = _listChallenge
 
     private val _progresState = MutableLiveData(false)
@@ -84,5 +85,21 @@ class ChallengeViewModel(application: Application) : AndroidViewModel(applicatio
         }
     }
 
+
+    fun getRandomChallengeFromFirestore() {
+        viewModelScope.launch {
+            _progresState.value = true
+            try {
+                val challenge = challengeRepository.getRandomChallengeFromFirestore()
+                _listChallenge.value = mutableListOf<Challenge>().apply {
+                    challenge?.let { add(it) }
+                }
+            } catch (e: Exception) {
+                Log.e("ViewModelError", "Error fetching random challenge: ${e.message}")
+            } finally {
+                _progresState.value = false
+            }
+        }
+    }
 }
 

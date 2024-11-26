@@ -6,6 +6,7 @@ import com.example.bottle_flip.data.ChallengeDao
 import com.example.bottle_flip.model.Challenge
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
 
 class challengeRepository(val context: Context){
@@ -88,6 +89,25 @@ class challengeRepository(val context: Context){
             }
     }
 
+
+    suspend fun getRandomChallengeFromFirestore(): Challenge? {
+        return withContext(Dispatchers.IO) {
+            try {
+                val challenges = mutableListOf<Challenge>()
+                val snapshot = collectionRef.get().await() // Use coroutines with Firestore
+                for (document in snapshot.documents) {
+                    val challenge = document.toObject(Challenge::class.java)
+                    if (challenge != null) {
+                        challenges.add(challenge)
+                    }
+                }
+                if (challenges.isNotEmpty()) challenges.random() else null
+            } catch (e: Exception) {
+                Log.e("FirestoreError", "Error fetching challenges: ${e.message}")
+                null
+            }
+        }
+    }
 
 
 }

@@ -1,6 +1,5 @@
 package com.example.bottle_flip.model
 
-import android.util.Log
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.io.Serializable
@@ -8,7 +7,6 @@ import java.io.Serializable
 @Entity
 data class Challenge(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
-    val description: String
-):Serializable
-
+    var id: Int = 0, // Mantiene id como Int
+    var description: String = "" // Valor predeterminado para compatibilidad con Firestore
+) : Serializable
