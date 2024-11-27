@@ -1,8 +1,8 @@
 package com.example.bottle_flip.repository
 import android.content.Context
 import android.util.Log
-import com.example.bottle_flip.data.ChallengeDB
-import com.example.bottle_flip.data.ChallengeDao
+//import com.example.bottle_flip.data.ChallengeDB
+//import com.example.bottle_flip.data.ChallengeDao
 import com.example.bottle_flip.model.Challenge
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
@@ -13,30 +13,75 @@ class challengeRepository(val context: Context){
 
     private val db = FirebaseFirestore.getInstance()
     private val collectionRef = db.collection("Challenge")
-    private var challengeDao:ChallengeDao = ChallengeDB.getDatabase(context).challengeDao()
 
+    fun savechallenge(challenge: Challenge, onSuccess: (String) -> Unit, onFailure: (Exception) -> Unit) {
+        // Primero obtenemos todos los documentos de la colección
+        collectionRef.get()
+            .addOnSuccessListener { querySnapshot ->
+                var newId = challenge.id  // Usamos el id del challenge que nos pasan
+                var idExists = true
 
+                // Verificamos si el id ya está en uso
+                while (idExists) {
+                    idExists = false
+                    for (document in querySnapshot.documents) {
+                        // Comprobamos si el campo "id" en el documento ya tiene el mismo valor
+                        val existingId = document.getLong("id")?.toInt()
+                        if (existingId == newId) {
+                            // Si el id ya existe, incrementamos el id
+                            newId++
+                            idExists = true
+                            break
+                        }
+                    }
+                }
 
-    suspend fun savechallenge(challenge: Challenge) {
-        withContext(Dispatchers.IO) {
-            Log.d("repositoryDebug", challenge.toString())
-            Log.d("CurrentThread", Thread.currentThread().name)
+                // Creamos el challenge con el nuevo id único
+                val challengeWithNewId = challenge.copy(id = newId)
 
-            // Guardar el desafío en la base de datos
-            challengeDao.saveChallenge(challenge)
-
-            Log.d("repositoryDebug3", challenge.toString())
-        }
+                // Ahora agregamos el challenge con el nuevo id
+                collectionRef.add(challengeWithNewId)
+                    .addOnSuccessListener { documentReference ->
+                        Log.d("repositoryDebug", "Nuevo desafío agregado con ID: ${documentReference.id}")
+                        onSuccess(documentReference.id)  // Aquí puedes pasar el ID del nuevo documento
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e("repositoryDebug", "Error al agregar el desafío", e)
+                        onFailure(e)  // Se pasa el error para que lo manejes fuera del método
+                    }
+            }
+            .addOnFailureListener { e ->
+                Log.e("repositoryDebug", "Error al obtener los documentos", e)
+                onFailure(e)
+            }
     }
 
 
-    suspend fun getListChallenge():MutableList<Challenge>{
-        return withContext(Dispatchers.IO){
-            val challenges = challengeDao.getListchallenge()
-            Log.d("ChallengeRepository", challenges.toString()) // Imprimir aquí
-            challenges
-        }
-    }
+
+    suspend fun getListChallenge(): List<Challenge> {
+       return try {
+           val querySnapshot = collectionRef.get().await() // Usar coroutines con Firestore
+           if (querySnapshot.isEmpty) {
+               emptyList() // Si no hay desafíos, retornar una lista vacía
+           } else {
+               // Mapear los documentos a objetos Challenge
+               querySnapshot.documents.mapNotNull { document ->
+                   document.toObject(Challenge::class.java)?.apply {
+                       id = document.getLong("id")?.toInt() ?: 0
+
+                   }
+               }
+           }
+       } catch (e: Exception) {
+           Log.e("repositoryDebug", "Error al traer los retos: ${e.message}", e)
+
+
+           emptyList() // Retorna una lista vacía en caso de error
+       }
+   }
+
+
+
 
     suspend fun deletechallenge(challenge: Challenge) {
 
@@ -50,7 +95,7 @@ class challengeRepository(val context: Context){
                 for (document in querySnapshot.documents) {
                     document.reference.delete()
                         .addOnSuccessListener {
-                            Log.d("repositoryDebug", "Document with id ${challenge.id} deleted successfully")
+                            Log.d("repositoryDebug222", challenge.toString())
                         }
                         .addOnFailureListener { e ->
                             Log.e("repositoryDebug", "Failed to delete document: ${e.message}", e)

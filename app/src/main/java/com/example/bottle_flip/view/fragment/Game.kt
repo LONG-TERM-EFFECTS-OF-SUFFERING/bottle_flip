@@ -319,12 +319,12 @@ class Game : Fragment() {
 
 
 
-    private suspend fun getRandomChallengeFromDatabase(): Challenge? {
+    /*private suspend fun getRandomChallengeFromDatabase(): Challenge? {
         return withContext(Dispatchers.IO) {
             val challenges = challengeRepository.getListChallenge()
             if (challenges.isNotEmpty()) challenges.random() else null
         }
-    }
+    }*/
 
     fun statusShowDialog(status: Boolean) {
         _statusShowDialog.value = status
