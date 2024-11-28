@@ -7,6 +7,8 @@ plugins {
     id("com.google.gms.google-services")
 }
 
+apply(from = rootProject.file("jacoco.gradle"))//jacoco
+
 android {
     namespace = "com.example.bottle_flip"
     compileSdk = 34
@@ -71,7 +73,9 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.core.ktx)
     testImplementation(libs.junit)
+    testImplementation(libs.junit.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
@@ -103,6 +107,22 @@ dependencies {
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.auth.ktx)
+
+    //testing
+    testImplementation ("org.mockito:mockito-core:4.x")
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.x")
+    testImplementation ("io.mockk:mockk:1.13.4")
+
+    testImplementation("junit:junit:4.13.2")
+    //testImplementation("org.mockito:mockito-core:3.12.4")
+    testImplementation("org.mockito:mockito-inline:3.12.4")
+    testImplementation ("org.mockito:mockito-android:3.11.2")
+    testImplementation ("org.mockito.kotlin:mockito-kotlin:4.1.0")
+    //testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.6.0")
+    testImplementation ("androidx.arch.core:core-testing:2.2.0")
+    debugImplementation ("org.jacoco:org.jacoco.core:0.8.7")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     // Room
     implementation ("androidx.room:room-runtime:2.5.2")
