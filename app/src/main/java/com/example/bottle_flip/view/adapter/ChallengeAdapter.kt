@@ -10,7 +10,10 @@ import com.example.bottle_flip.model.Challenge
 
 
 
-class ChallengeAdapter(private val listChallenge:MutableList<Challenge>, private val navController: NavController):RecyclerView.Adapter<ChallengeViewHolder>() {
+class ChallengeAdapter(
+    private val listChallenge:MutableList<Challenge>,
+    private val navController: NavController):RecyclerView.Adapter<ChallengeViewHolder>() {
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ChallengeViewHolder {
         val binding = ItemRetoBinding.inflate(LayoutInflater.from(parent.context),parent, false)
         return ChallengeViewHolder(binding, navController)
@@ -24,5 +27,12 @@ class ChallengeAdapter(private val listChallenge:MutableList<Challenge>, private
         val Challenge = listChallenge[position]
         holder.setItemInventory(Challenge)
 
+    }
+
+    // Método para actualizar los datos del adaptador
+    fun updateData(newChallenges: List<Challenge>) {
+        listChallenge.clear() // Limpia la lista actual
+        listChallenge.addAll(newChallenges) // Agrega los nuevos elementos
+        notifyDataSetChanged() // Notifica al adaptador que los datos han cambiado
     }
 }

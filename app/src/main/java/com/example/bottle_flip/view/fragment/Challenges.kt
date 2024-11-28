@@ -19,6 +19,7 @@ import dagger.hilt.android.AndroidEntryPoint
 class Challenge : Fragment() {
     private lateinit var binding: ChallengesBinding
     private val challengeViewModel: ChallengeViewModel by viewModels()
+    private lateinit var adapter: ChallengeAdapter // Instancia única del adaptador
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,8 +32,21 @@ class Challenge : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupRecyclerView()
         controller()
         observerViewModel()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        // Asegúrate de actualizar la lista cada vez que regreses a este fragmento
+        challengeViewModel.getListChallenge()
+    }
+
+    private fun setupRecyclerView() {
+        adapter = ChallengeAdapter(mutableListOf(), findNavController())
+        binding.rvContainerChallenge.layoutManager = LinearLayoutManager(context)
+        binding.rvContainerChallenge.adapter = adapter
     }
 
     private fun controller() {
@@ -45,19 +59,9 @@ class Challenge : Fragment() {
     }
 
     private fun observerViewModel() {
-        observerListChallenge()
-    }
-
-    private fun observerListChallenge(){
         challengeViewModel.getListChallenge()
-        challengeViewModel.listChallenge.observe(viewLifecycleOwner){ listInventory ->
-            val recycler = binding.rvContainerChallenge
-            val layoutManager =LinearLayoutManager(context)
-            recycler.layoutManager = layoutManager
-            val adapter = ChallengeAdapter(listInventory, findNavController())
-            recycler.adapter = adapter
-            adapter.notifyDataSetChanged()
+        challengeViewModel.listChallenge.observe(viewLifecycleOwner) { listInventory ->
+            adapter.updateData(listInventory) // Actualiza los datos del adaptador
         }
-
     }
 }
