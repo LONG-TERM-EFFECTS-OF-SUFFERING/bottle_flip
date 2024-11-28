@@ -4,32 +4,18 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import com.example.bottle_flip.model.Challenge
 import com.example.bottle_flip.repository.ChallengeRepository
 import io.mockk.coEvery
-import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.*
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
-import android.app.Application
-import androidx.test.core.app.ApplicationProvider
-import io.mockk.every
-import io.mockk.mockkConstructor
-import io.mockk.verify
 import org.junit.Before
-import com.google.firebase.FirebaseApp
-import com.google.firebase.FirebaseOptions
 import io.mockk.just
 import io.mockk.runs
 import org.junit.After
-import org.junit.Assert
-import org.mockito.Mockito.mock
-import org.mockito.kotlin.whenever
 
 class ChallengeViewModelTest {
-    //private lateinit var challengeViewModel: ChallengeViewModel
-    //private lateinit var challengeRepo: challengeRepository
 
     @get:Rule
     val instantExecutorRule = InstantTaskExecutorRule() // Para LiveData
