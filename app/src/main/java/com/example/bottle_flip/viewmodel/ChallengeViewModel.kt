@@ -1,24 +1,22 @@
 package com.example.bottle_flip.viewmodel
 
-import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.bottle_flip.model.Challenge
-//import com.example.bottle_flip.data.ChallengeDB
-import com.example.bottle_flip.repository.challengeRepository
+import com.example.bottle_flip.repository.ChallengeRepository
 import kotlinx.coroutines.launch
-//import com.example.bottle_flip.data.ChallengeDao
 import com.example.bottle_flip.utils.SingleLiveEvent
+import dagger.hilt.android.lifecycle.HiltViewModel
+import javax.inject.Inject
 
 
-class ChallengeViewModel(application: Application) : AndroidViewModel(application) {
-
-    val context = getApplication<Application>()
-    private val challengeRepository = challengeRepository(context)
-
+@HiltViewModel
+class ChallengeViewModel @Inject constructor(
+    private val challengeRepository: ChallengeRepository
+): ViewModel() {
     private val _listChallenge = SingleLiveEvent<MutableList<Challenge>>()
     val listChallenge: LiveData<MutableList<Challenge>> get() = _listChallenge
 

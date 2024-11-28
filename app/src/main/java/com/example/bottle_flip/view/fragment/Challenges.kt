@@ -12,7 +12,10 @@ import com.example.bottle_flip.R
 import com.example.bottle_flip.databinding.ChallengesBinding
 import com.example.bottle_flip.viewmodel.ChallengeViewModel
 import com.example.bottle_flip.view.adapter.ChallengeAdapter
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class Challenge : Fragment() {
     private lateinit var binding: ChallengesBinding
     private val challengeViewModel: ChallengeViewModel by viewModels()

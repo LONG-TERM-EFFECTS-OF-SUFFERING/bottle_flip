@@ -11,7 +11,9 @@ import com.bumptech.glide.Glide
 import com.example.bottle_flip.R
 
 import com.example.bottle_flip.databinding.InstructionsBinding
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class Instructions : Fragment() {
     private lateinit var binding: InstructionsBinding
 

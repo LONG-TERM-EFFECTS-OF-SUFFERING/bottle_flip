@@ -13,7 +13,6 @@ import javax.inject.Inject
 @HiltViewModel
 class LoginViewModel @Inject constructor(
 	private val repository: LoginRepository
-
 ): ViewModel() {
 	private val _isRegistered = MutableLiveData<UserResponse>()
 	val isRegistered: LiveData<UserResponse> = _isRegistered

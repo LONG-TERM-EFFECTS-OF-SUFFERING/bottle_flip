@@ -13,9 +13,10 @@ import com.example.bottle_flip.R
 import com.example.bottle_flip.databinding.EditChallengeDialogBinding
 import com.example.bottle_flip.model.Challenge
 import com.example.bottle_flip.viewmodel.ChallengeViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
 
-
+@AndroidEntryPoint
 class EditChallengeDialog : DialogFragment() {
 
     private lateinit var receivedChallenge: Challenge

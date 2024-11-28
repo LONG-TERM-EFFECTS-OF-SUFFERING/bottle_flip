@@ -1,17 +1,18 @@
 package com.example.bottle_flip.repository
-import android.content.Context
+
 import android.util.Log
-//import com.example.bottle_flip.data.ChallengeDB
-//import com.example.bottle_flip.data.ChallengeDao
 import com.example.bottle_flip.model.Challenge
 import com.google.firebase.firestore.FirebaseFirestore
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.tasks.await
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class challengeRepository(val context: Context){
 
-    private val db = FirebaseFirestore.getInstance()
+
+class ChallengeRepository @Inject constructor(
+    private val db: FirebaseFirestore
+){
     private val collectionRef = db.collection("Challenge")
 
     fun savechallenge(challenge: Challenge, onSuccess: (String) -> Unit, onFailure: (Exception) -> Unit) {

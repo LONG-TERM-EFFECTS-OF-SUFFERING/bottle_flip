@@ -13,7 +13,10 @@ import com.example.bottle_flip.R
 import com.example.bottle_flip.databinding.DeleteChallengeDialogBinding
 import com.example.bottle_flip.model.Challenge
 import com.example.bottle_flip.viewmodel.ChallengeViewModel
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class DeleteChangeDialog: DialogFragment() {
 
     private val challengeViewModel: ChallengeViewModel by viewModels()

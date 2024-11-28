@@ -28,18 +28,17 @@ import androidx.navigation.Navigation
 import androidx.navigation.fragment.findNavController
 import com.example.bottle_flip.Dialogs.ChallengeDialog
 import com.example.bottle_flip.databinding.GameBinding
-import com.example.bottle_flip.repository.challengeRepository
-import com.example.bottle_flip.model.Challenge
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import androidx.fragment.app.viewModels
 import com.example.bottle_flip.MainActivity
 import com.example.bottle_flip.view.LoginActivity
 import com.example.bottle_flip.viewmodel.ChallengeViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class Game : Fragment() {
 
     private val challengeViewModel: ChallengeViewModel by viewModels() // ViewModel to obtain challenges
@@ -57,7 +56,6 @@ class Game : Fragment() {
     private lateinit var audioSpinBottle: MediaPlayer
     private lateinit var binding: GameBinding  //Acceder a los componenetes de la vista principal
     private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var challengeRepository: challengeRepository
     private var isMute: Boolean = true
     private val db = FirebaseFirestore.getInstance()
 
@@ -79,7 +77,6 @@ class Game : Fragment() {
     ): View? {
         binding = GameBinding.inflate(inflater)
         binding.lifecycleOwner = this
-        challengeRepository = challengeRepository(requireContext())
         return binding.root
     }
 
