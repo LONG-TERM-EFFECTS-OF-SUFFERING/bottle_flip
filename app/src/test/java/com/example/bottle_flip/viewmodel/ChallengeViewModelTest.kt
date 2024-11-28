@@ -36,8 +36,8 @@ class ChallengeViewModelTest {
     fun `getListChallenge updates listChallenge and progresState correctly`() = runTest {
         // Mockea el comportamiento del repositorio
         val mockChallenges = listOf(
-            Challenge(21, "Challenge 21"),
-            Challenge(22, "Challenge 22")
+            Challenge(10, "Challenge 11"),
+            Challenge(11, "Challenge 10")
         )
         coEvery { mockChallengeRepository.getListChallenge() } returns mockChallenges
 

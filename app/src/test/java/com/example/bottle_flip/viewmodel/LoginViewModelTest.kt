@@ -19,7 +19,7 @@ class LoginViewModelTest {
     @Test
     fun `loginUser should invoke repository and handle success`() {
         // Arrange
-        val userRequest = UserRequest(email = "camilo@gmail.com", password = "1234567")
+        val userRequest = UserRequest(email = "mely@gmail.com", password = "1234567")
         val callbackSlot = slot<(Boolean) -> Unit>()
 
         // Mockear el comportamiento del repositorio
@@ -50,7 +50,7 @@ class LoginViewModelTest {
     @Test
     fun `loginUser should invoke repository and handle failure`() {
         // Arrange
-        val userRequest = UserRequest(email = "camilo@gmail.com", password = "1234567")
+        val userRequest = UserRequest(email = "mely@gmail.com", password = "1234567")
         val callbackSlot = slot<(Boolean) -> Unit>()
 
         // Mockear el comportamiento del repositorio
