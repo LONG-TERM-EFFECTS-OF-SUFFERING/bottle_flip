@@ -26,7 +26,7 @@ class ChallengeViewModel(application: Application) : AndroidViewModel(applicatio
     val progresState: LiveData<Boolean> = _progresState
 
     fun saveChallenge(challenge: Challenge) {
-        // Inicia el progreso
+        
         _progresState.value = true
 
 
